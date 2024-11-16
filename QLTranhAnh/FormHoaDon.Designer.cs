@@ -47,7 +47,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(787, 206);
+            this.tabControl1.Size = new System.Drawing.Size(787, 355);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -55,7 +55,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(779, 180);
+            this.tabPage1.Size = new System.Drawing.Size(779, 329);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Hoá Đơn Nhập";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -65,7 +65,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 424);
+            this.tabPage2.Size = new System.Drawing.Size(779, 329);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Chi Tiết Hoá Đơn Nhập";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -74,7 +74,7 @@
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(792, 424);
+            this.tabPage3.Size = new System.Drawing.Size(779, 180);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Nhà Cung Cấp";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@
             // 
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(792, 424);
+            this.tabPage4.Size = new System.Drawing.Size(779, 329);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Nhân Viên";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -92,7 +92,7 @@
             // 
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(792, 424);
+            this.tabPage5.Size = new System.Drawing.Size(779, 329);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Công Việc";
             this.tabPage5.UseVisualStyleBackColor = true;

@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace QLTranhAnh
 {
     public partial class FormTimkiem : Form
     {
         SqlConnection connection;
         SqlCommand command;
-        string str = "Data Source=DESKTOP-VT4B3DF\\SQLEXPRESS;Initial Catalog=TranhAnh;User ID=sa;Password = abc123";
+        string str = "Data Source=DESKTOP-VT4B3DF\\SQLEXPRESS;Initial Catalog=QuanLyTranhAnh1;User ID=sa;Password = abc123";
         SqlDataAdapter adapter = new SqlDataAdapter();
         DataTable tableKT = new DataTable();
         DataTable tableLoai = new DataTable();
@@ -46,7 +47,7 @@ namespace QLTranhAnh
         void loadDataNhom()
         {
             command = connection.CreateCommand();
-            command.CommandText = "select * from NhamAnh";
+            command.CommandText = "select * from NhomTranhAnh";
             adapter.SelectCommand = command;
             tableNhom.Clear();
             adapter.Fill(tableNhom);
@@ -64,7 +65,7 @@ namespace QLTranhAnh
         void loadDataNSX()
         {
             command = connection.CreateCommand();
-            command.CommandText = "select * from NuocSX";
+            command.CommandText = "select * from NoiSanXuat";
             adapter.SelectCommand = command;
             tableNSX.Clear();
             adapter.Fill(tableNSX);
@@ -140,5 +141,52 @@ namespace QLTranhAnh
             }
         }
 
+        private void btnLammoi_Click(object sender, EventArgs e)
+        {
+            loadDataKT();
+            loadDataCL() ;
+            loadDataKA() ;
+            loadDataLoai();
+            loadDataMau() ;
+            loadDataNhom() ;
+            loadDataNSX() ;
+            ClearInputs();
+        }
+        private void ClearInputs()
+        {
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+            textBox5.Clear();
+            textBox6.Clear();
+            textBox7.Clear();
+            textBox8.Clear();
+            textBox9.Clear();
+            textBox10.Clear();
+            textBox11.Clear();
+            textBox12.Clear();
+            textBox13.Clear();
+            textBox14.Clear();
+            textBox15.Clear();
+            textBox16.Clear();
+            textBox17.Clear();
+            textBox18.Clear();
+            textBox19.Clear();
+            textBox20.Clear();
+            textBox21.Clear();
+            textBox22.Clear();
+            textBox23.Clear();
+            textBox24.Clear();
+            textBox25.Clear();
+            textBox26.Clear();
+            textBox27.Clear();
+            textBox28.Clear();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
