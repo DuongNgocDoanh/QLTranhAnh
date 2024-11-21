@@ -95,10 +95,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnTimNhom = new System.Windows.Forms.Button();
-            this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
@@ -111,16 +109,14 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnTim1 = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.tbMLTimKiem = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnSua1 = new System.Windows.Forms.Button();
             this.btnXoa1 = new System.Windows.Forms.Button();
             this.btnThem1 = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.tbTenLoai = new System.Windows.Forms.TextBox();
+            this.tbMaLoai = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.dataGridViewLoai = new System.Windows.Forms.DataGridView();
@@ -135,9 +131,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnTim = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dataGridViewKT = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -788,10 +782,8 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.btnTimNhom);
-            this.groupBox6.Controls.Add(this.textBox11);
             this.groupBox6.Controls.Add(this.textBox12);
             this.groupBox6.Controls.Add(this.label12);
-            this.groupBox6.Controls.Add(this.label11);
             this.groupBox6.Location = new System.Drawing.Point(462, 159);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(322, 186);
@@ -807,13 +799,7 @@
             this.btnTimNhom.TabIndex = 12;
             this.btnTimNhom.Text = "Tìm Kiếm";
             this.btnTimNhom.UseVisualStyleBackColor = true;
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new System.Drawing.Point(158, 81);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 11;
+            this.btnTimNhom.Click += new System.EventHandler(this.btnTimNhom_Click);
             // 
             // textBox12
             // 
@@ -830,15 +816,6 @@
             this.label12.Size = new System.Drawing.Size(53, 13);
             this.label12.TabIndex = 8;
             this.label12.Text = "Mã Nhóm";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(74, 89);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(57, 13);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Tên Nhóm";
             // 
             // groupBox5
             // 
@@ -878,6 +855,7 @@
             this.btnSuaNhom.TabIndex = 4;
             this.btnSuaNhom.Text = "Sửa";
             this.btnSuaNhom.UseVisualStyleBackColor = true;
+            this.btnSuaNhom.Click += new System.EventHandler(this.btnSuaNhom_Click);
             // 
             // btnXoaNhom
             // 
@@ -887,6 +865,7 @@
             this.btnXoaNhom.TabIndex = 3;
             this.btnXoaNhom.Text = "Xoá";
             this.btnXoaNhom.UseVisualStyleBackColor = true;
+            this.btnXoaNhom.Click += new System.EventHandler(this.btnXoaNhom_Click);
             // 
             // btnThemNhom
             // 
@@ -896,6 +875,7 @@
             this.btnThemNhom.TabIndex = 2;
             this.btnThemNhom.Text = "Thêm";
             this.btnThemNhom.UseVisualStyleBackColor = true;
+            this.btnThemNhom.Click += new System.EventHandler(this.btnThemNhom_Click);
             // 
             // label10
             // 
@@ -939,10 +919,8 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.btnTim1);
-            this.groupBox4.Controls.Add(this.textBox7);
-            this.groupBox4.Controls.Add(this.textBox8);
+            this.groupBox4.Controls.Add(this.tbMLTimKiem);
             this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Location = new System.Drawing.Point(431, 162);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(353, 184);
@@ -958,46 +936,31 @@
             this.btnTim1.TabIndex = 12;
             this.btnTim1.Text = "Tìm Kiếm";
             this.btnTim1.UseVisualStyleBackColor = true;
+            this.btnTim1.Click += new System.EventHandler(this.btnTim1_Click);
             // 
-            // textBox7
+            // tbMLTimKiem
             // 
-            this.textBox7.Location = new System.Drawing.Point(156, 69);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 20);
-            this.textBox7.TabIndex = 11;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(156, 29);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 20);
-            this.textBox8.TabIndex = 10;
+            this.tbMLTimKiem.Location = new System.Drawing.Point(146, 51);
+            this.tbMLTimKiem.Name = "tbMLTimKiem";
+            this.tbMLTimKiem.Size = new System.Drawing.Size(100, 20);
+            this.tbMLTimKiem.TabIndex = 10;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(73, 29);
+            this.label8.Location = new System.Drawing.Point(83, 54);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(48, 13);
             this.label8.TabIndex = 8;
             this.label8.Text = "Mã Loại ";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(76, 77);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Tên Loại";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnSua1);
             this.groupBox3.Controls.Add(this.btnXoa1);
             this.groupBox3.Controls.Add(this.btnThem1);
-            this.groupBox3.Controls.Add(this.textBox6);
-            this.groupBox3.Controls.Add(this.textBox5);
+            this.groupBox3.Controls.Add(this.tbTenLoai);
+            this.groupBox3.Controls.Add(this.tbMaLoai);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(18, 162);
@@ -1015,6 +978,7 @@
             this.btnSua1.TabIndex = 6;
             this.btnSua1.Text = "Sửa ";
             this.btnSua1.UseVisualStyleBackColor = true;
+            this.btnSua1.Click += new System.EventHandler(this.btnSua1_Click);
             // 
             // btnXoa1
             // 
@@ -1033,25 +997,26 @@
             this.btnThem1.TabIndex = 4;
             this.btnThem1.Text = "Thêm ";
             this.btnThem1.UseVisualStyleBackColor = true;
+            this.btnThem1.Click += new System.EventHandler(this.btnThem1_Click);
             // 
-            // textBox6
+            // tbTenLoai
             // 
-            this.textBox6.Location = new System.Drawing.Point(116, 69);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 3;
+            this.tbTenLoai.Location = new System.Drawing.Point(116, 69);
+            this.tbTenLoai.Name = "tbTenLoai";
+            this.tbTenLoai.Size = new System.Drawing.Size(100, 20);
+            this.tbTenLoai.TabIndex = 3;
             // 
-            // textBox5
+            // tbMaLoai
             // 
-            this.textBox5.Location = new System.Drawing.Point(116, 29);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 2;
+            this.tbMaLoai.Location = new System.Drawing.Point(116, 29);
+            this.tbMaLoai.Name = "tbMaLoai";
+            this.tbMaLoai.Size = new System.Drawing.Size(100, 20);
+            this.tbMaLoai.TabIndex = 2;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(36, 77);
+            this.label6.Location = new System.Drawing.Point(32, 72);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 1;
@@ -1121,6 +1086,7 @@
             this.btnXoa.TabIndex = 2;
             this.btnXoa.Text = "Xoá";
             this.btnXoa.UseVisualStyleBackColor = true;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // btnSua
             // 
@@ -1130,6 +1096,7 @@
             this.btnSua.TabIndex = 3;
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = true;
+            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
             // textBox2
             // 
@@ -1166,9 +1133,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnTim);
-            this.groupBox1.Controls.Add(this.textBox4);
             this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(438, 162);
             this.groupBox1.Name = "groupBox1";
@@ -1185,14 +1150,7 @@
             this.btnTim.TabIndex = 4;
             this.btnTim.Text = "Tìm Kiếm";
             this.btnTim.UseVisualStyleBackColor = true;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(140, 69);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(159, 20);
-            this.textBox4.TabIndex = 11;
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.btnTim.Click += new System.EventHandler(this.btnTim_Click);
             // 
             // textBox3
             // 
@@ -1200,15 +1158,6 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(159, 20);
             this.textBox3.TabIndex = 10;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(48, 72);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Tên Kích Thước";
             // 
             // label4
             // 
@@ -1325,9 +1274,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dataGridViewKT;
         private System.Windows.Forms.TabControl tabControl1;
@@ -1357,15 +1304,13 @@
         private System.Windows.Forms.Button btnSua1;
         private System.Windows.Forms.Button btnXoa1;
         private System.Windows.Forms.Button btnThem1;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox tbTenLoai;
+        private System.Windows.Forms.TextBox tbMaLoai;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnTim1;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox tbMLTimKiem;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox16;
@@ -1381,10 +1326,8 @@
         private System.Windows.Forms.Button btnXoaCL;
         private System.Windows.Forms.Button btnThemCL;
         private System.Windows.Forms.Button btnTimNhom;
-        private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Button btnSuaNhom;
