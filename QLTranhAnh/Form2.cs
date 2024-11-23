@@ -57,5 +57,19 @@ namespace QLTranhAnh
             OpenChildForm(new FormKhachHang());
             label1.Text = btnKhachhang.Text;
         }
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            // Hiển thị hộp thoại xác nhận người dùng có muốn thoát không
+            DialogResult dialogResult = MessageBox.Show("Bạn có muốn thoát chương trình không?",
+                                                        "Xác nhận thoát",
+                                                        MessageBoxButtons.YesNo,
+                                                        MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                // Nếu người dùng chọn Yes, đóng ứng dụng
+                Application.Exit();
+            }
+        }
     }
 }

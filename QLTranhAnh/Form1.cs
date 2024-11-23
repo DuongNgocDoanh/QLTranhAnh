@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 namespace QLTranhAnh
 {
     public partial class Form1 : Form
     {
+        
         SqlConnection connection;
         SqlCommand command;
         string str = "Data Source=DESKTOP-VT4B3DF\\SQLEXPRESS;Initial Catalog=ManagePicture;User ID=sa;Password = abc123";
@@ -30,10 +33,23 @@ namespace QLTranhAnh
         public Form1()
         {
             InitializeComponent();
-            
-        }
-        
 
+        }
+
+        public void AddMaHangToDanhMuc(string maHang, string tenHang, int soLuong)
+        {
+            using (SqlConnection conn = new SqlConnection(str))
+            {
+                conn.Open();
+                string queryB = "INSERT INTO DMHangHoa (MaHang,SoLuong) VALUES (@MaHang,@SoLuong)";
+                using (SqlCommand cmdB = new SqlCommand(queryB, conn))
+                {
+                    cmdB.Parameters.AddWithValue("@MaHang", maHang);
+                    cmdB.Parameters.AddWithValue("@SoLuong", soLuong);
+                    cmdB.ExecuteNonQuery();
+                }
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             connection = new SqlConnection(str);
@@ -56,19 +72,19 @@ namespace QLTranhAnh
             i = dataGridView1.CurrentRow.Index;
             tbMahanghoa.Text = dataGridView1.Rows[i].Cells[0].Value.ToString();
             tbTenhanghoa.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
-            tbMaloai.Text = dataGridView1.Rows[i].Cells[2].Value.ToString();
-            comboBox1.Text = dataGridView1.Rows[i].Cells[3].Value.ToString();
-            comboBox2.Text = dataGridView1.Rows[i].Cells[4].Value.ToString();
-            comboBox3.Text = dataGridView1.Rows[i].Cells[5].Value.ToString();
-            comboBox5.Text = dataGridView1.Rows[i].Cells[6].Value.ToString();
-            comboBox4.Text = dataGridView1.Rows[i].Cells[7].Value.ToString();
-            comboBox6.Text = dataGridView1.Rows[i].Cells[8].Value.ToString();
-            comboBox7.Text = dataGridView1.Rows[i].Cells[9].Value.ToString();
-            tbSoluong.Text = dataGridView1.Rows[i].Cells[10].Value.ToString();
+            cbMaLoai.Text = dataGridView1.Rows[i].Cells[2].Value.ToString();
+            cbMaKT.Text = dataGridView1.Rows[i].Cells[3].Value.ToString();
+            cbMaNhom.Text = dataGridView1.Rows[i].Cells[4].Value.ToString();
+            cbMaCL.Text = dataGridView1.Rows[i].Cells[5].Value.ToString();
+            cbMaCD.Text = dataGridView1.Rows[i].Cells[6].Value.ToString();
+            cbMaKhung.Text = dataGridView1.Rows[i].Cells[7].Value.ToString();
+            cbMaMau.Text = dataGridView1.Rows[i].Cells[8].Value.ToString();
+            cbMaNSX.Text = dataGridView1.Rows[i].Cells[9].Value.ToString();
+            numericUpDown1.Text = dataGridView1.Rows[i].Cells[10].Value.ToString();
             tbDongianhap.Text = dataGridView1.Rows[i].Cells[11].Value.ToString();
             tbDongiaban.Text = dataGridView1.Rows[i].Cells[12].Value.ToString();
-            tbThoigianbaohanh.Text = dataGridView1.Rows[i].Cells[13].Value.ToString();
-            tbGhichu.Text = dataGridView1.Rows[i].Cells[15].Value.ToString();
+            cbTGBH.Text = dataGridView1.Rows[i].Cells[13].Value.ToString();
+            tbGhichu.Text = dataGridView1.Rows[i].Cells[14].Value.ToString();
             
         }
 
@@ -81,28 +97,31 @@ namespace QLTranhAnh
             }
 
 
-            string updateQuery = "UPDATE DMHangHoa SET TenHangHoa = @TenHangHoa, MaLoai = @MaLoai, MaKichThuoc = @MaKichThuoc,MaNhom = @MaNhom,MaChatLieu = @MaChatLieu,MaCongDong = @MaCongDong,MaKhung = @MaKhung,MaMau = @MaMau,MaNoiSX = @MaNoiSX,SoLuong = @SoLuong,DonGiaNhap = @DonGiaNhap,DonGiaBan = @DonGiaBan,ThoiGianBaoHanh = @ThoiGianBaoHanh,GhiChu = @GhiChu WHERE MaHang = @MaHang";
+            string updateQuery = "UPDATE DMHangHoa SET TenHangHoa = @TenHangHoa, MaLoai = @MaLoai, MaKichThuoc = @MaKichThuoc,MaNhom = @MaNhom,MaChatLieu = @MaChatLieu,MaCongDong = @MaCongDong,MaKhung = @MaKhung,MaMau = @MaMau,MaNoiSX = @MaNoiSX,SoLuong = @SoLuong,DonGiaNhap = @DonGiaNhap,DonGiaBan = @DonGiaBan,ThoiGianBaoHanh = @ThoiGianBaoHanh,GhiChu = @GhiChu,Anh = @Anh WHERE MaHang = @MaHang";
 
             using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
             {
-
-                
                 updateCommand.Parameters.AddWithValue("@MaHang", tbMahanghoa.Text);
                 updateCommand.Parameters.AddWithValue("@TenHangHoa", tbTenhanghoa.Text);
-                updateCommand.Parameters.AddWithValue("@MaLoai", tbMaloai.Text);
-                updateCommand.Parameters.AddWithValue("@MaKichThuoc", comboBox1.Text);
-                updateCommand.Parameters.AddWithValue("@MaNhom", comboBox2.Text);
-                updateCommand.Parameters.AddWithValue("@MaChatLieu", comboBox3.Text);
-                updateCommand.Parameters.AddWithValue("@MaKhung", comboBox4.Text);
-                updateCommand.Parameters.AddWithValue("@MaCongDong", comboBox5.Text);
-                updateCommand.Parameters.AddWithValue("@MaMau", comboBox6.Text);
-                updateCommand.Parameters.AddWithValue("@MaNoiSX", comboBox7.Text);
-                updateCommand.Parameters.AddWithValue("@SoLuong", tbSoluong.Text);
-                updateCommand.Parameters.AddWithValue("@DonGiaNhap", tbDongianhap.Text);
-                updateCommand.Parameters.AddWithValue("@DonGiaBan", tbDongiaban.Text);
-                updateCommand.Parameters.AddWithValue("@ThoiGianBaoHanh", tbThoigianbaohanh.Text);
+                updateCommand.Parameters.AddWithValue("@MaLoai", cbMaLoai.Text);
+                updateCommand.Parameters.AddWithValue("@MaKichThuoc", cbMaKT.Text);
+                updateCommand.Parameters.AddWithValue("@MaNhom", cbMaNhom.Text);
+                updateCommand.Parameters.AddWithValue("@MaChatLieu", cbMaCL.Text);
+                updateCommand.Parameters.AddWithValue("@MaCongDong", cbMaCD.Text);
+                updateCommand.Parameters.AddWithValue("@MaKhung", cbMaKhung.Text);   
+                updateCommand.Parameters.AddWithValue("@MaMau", cbMaMau.Text);
+                updateCommand.Parameters.AddWithValue("@MaNoiSX", cbMaNSX.Text);
+                updateCommand.Parameters.AddWithValue("@SoLuong", numericUpDown1.Text);
+                updateCommand.Parameters.AddWithValue("@DonGiaNhap", decimal.Parse(tbDongianhap.Text));
+                updateCommand.Parameters.AddWithValue("@DonGiaBan", decimal.Parse(tbDongiaban.Text));
+                updateCommand.Parameters.AddWithValue("@ThoiGianBaoHanh", cbTGBH.Text);
                 updateCommand.Parameters.AddWithValue("@GhiChu", tbGhichu.Text);
-
+                if (pictureBox1.Image != null)
+                {
+                    byte[] imageBytes = ImageToByteArray(pictureBox1.Image);
+                    updateCommand.Parameters.AddWithValue("@Anh", imageBytes);
+                }
+                
                 try
                 {
                     int rowsAffected = updateCommand.ExecuteNonQuery();
@@ -138,32 +157,36 @@ namespace QLTranhAnh
                     return;
                 }
             }
-
-
-            string insertQuery = "INSERT INTO DMHangHoa (MaHang, TenHangHoa, MaLoai, MaKichThuoc, MaNhom, MaChatLieu, MaKhung,MaCongDong, MaMau, MaNoiSX, SoLuong, DonGiaNhap, DonGiaBan, ThoiGianBaoHanh, GhiChu) " +
-                "VALUES (@MaHang, @TenHangHoa, @MaLoai, @MaKichThuoc, @MaNhom, @MaChatLieu, @MaKhung,@MaCongDong, @MaMau, @MaNoiSX, @SoLuong, @DonGiaNhap, @DonGiaBan, @ThoiGianBaoHanh, @GhiChu)";
+            string insertQuery = "INSERT INTO DMHangHoa (MaHang, TenHangHoa, MaLoai, MaKichThuoc, MaNhom, MaChatLieu, MaCongDong,MaKhung, MaMau, MaNoiSX, SoLuong, DonGiaNhap, DonGiaBan, ThoiGianBaoHanh, GhiChu,Anh) " +
+                "VALUES (@MaHang, @TenHangHoa, @MaLoai, @MaKichThuoc, @MaNhom, @MaChatLieu, @MaCongDong,@MaKhung, @MaMau, @MaNoiSX, @SoLuong, @DonGiaNhap, @DonGiaBan, @ThoiGianBaoHanh,@GhiChu,@Anh)";
 
             using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
             {
 
                 insertCommand.Parameters.AddWithValue("@MaHang", tbMahanghoa.Text);
                 insertCommand.Parameters.AddWithValue("@TenHangHoa", tbTenhanghoa.Text);
-                insertCommand.Parameters.AddWithValue("@MaLoai", tbMaloai.Text);
-                insertCommand.Parameters.AddWithValue("@MaKichThuoc", comboBox1.Text);
-                insertCommand.Parameters.AddWithValue("@MaNhom", comboBox2.Text);
-                insertCommand.Parameters.AddWithValue("@MaChatLieu", comboBox3.Text);
-                insertCommand.Parameters.AddWithValue("@MaKhung", comboBox4.Text);
-                insertCommand.Parameters.AddWithValue("@MaCongDong", comboBox5.Text);
-                insertCommand.Parameters.AddWithValue("@MaMau", comboBox6.Text);
-                insertCommand.Parameters.AddWithValue("@MaNoiSX", comboBox7.Text);
-                insertCommand.Parameters.AddWithValue("@SoLuong", tbSoluong.Text);
-                insertCommand.Parameters.AddWithValue("@DonGiaNhap", tbDongianhap.Text);
-                insertCommand.Parameters.AddWithValue("@DonGiaBan", tbDongiaban.Text);
-                insertCommand.Parameters.AddWithValue("@ThoiGianBaoHanh", tbThoigianbaohanh.Text);
+                insertCommand.Parameters.AddWithValue("@MaLoai", cbMaLoai.Text);
+                insertCommand.Parameters.AddWithValue("@MaKichThuoc", cbMaKT.Text);
+                insertCommand.Parameters.AddWithValue("@MaNhom", cbMaNhom.Text);
+                insertCommand.Parameters.AddWithValue("@MaChatLieu", cbMaCL.Text);
+                insertCommand.Parameters.AddWithValue("@MaCongDong", cbMaCD.Text);
+                insertCommand.Parameters.AddWithValue("@MaKhung", cbMaKhung.Text);
+                insertCommand.Parameters.AddWithValue("@MaMau", cbMaMau.Text);
+                insertCommand.Parameters.AddWithValue("@MaNoiSX", cbMaNSX.Text);
+                insertCommand.Parameters.AddWithValue("@SoLuong", numericUpDown1.Value);
+                insertCommand.Parameters.AddWithValue("@DonGiaNhap", decimal.Parse(tbDongianhap.Text));
+                insertCommand.Parameters.AddWithValue("@DonGiaBan", decimal.Parse(tbDongiaban.Text));
+                insertCommand.Parameters.AddWithValue("@ThoiGianBaoHanh", cbTGBH.Text);
                 insertCommand.Parameters.AddWithValue("@GhiChu", tbGhichu.Text);
-
-
-
+                if (pictureBox1.Image != null)
+                {
+                    byte[] imageBytes = ImageToByteArray(pictureBox1.Image);
+                    insertCommand.Parameters.AddWithValue("@Anh", imageBytes);
+                }
+                else
+                {
+                    insertCommand.Parameters.AddWithValue("@Anh", DBNull.Value);  // Nếu không chọn ảnh, thêm giá trị null
+                }
                 try
                 {
 
@@ -179,7 +202,14 @@ namespace QLTranhAnh
                 }
             }
         }
-
+        private byte[] ImageToByteArray(Image image)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat); // Lưu ảnh vào bộ nhớ
+                return ms.ToArray(); // Chuyển ảnh thành mảng byte[]
+            }
+        }
         private void btnXoa_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(tbMahanghoa.Text))
@@ -188,32 +218,39 @@ namespace QLTranhAnh
                 return;
             }
 
+            
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa hàng hóa này?", "Xác nhận xóa", MessageBoxButtons.YesNo);
 
-            string deleteQuery = "DELETE FROM DMHangHoa WHERE MaHang = @MaHang";
-
-            using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+            if (dialogResult == DialogResult.Yes)
             {
-                deleteCommand.Parameters.AddWithValue("@MaHang", tbMahanghoa.Text);
+                string deleteQuery = "DELETE FROM DMHangHoa WHERE MaHang = @MaHang";
 
-                try
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
                 {
-                    int rowsAffected = deleteCommand.ExecuteNonQuery();
-                    if (rowsAffected > 0)
+                    deleteCommand.Parameters.AddWithValue("@MaHang", tbMahanghoa.Text);
+
+                    try
                     {
-                        MessageBox.Show("Đã xóa thành công!");
-                        loadData();
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadData();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã hàng hoá không tồn tại!");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Mã hàng hoá không tồn tại!");
+                        MessageBox.Show("Lỗi: " + ex.Message);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi: " + ex.Message);
                 }
             }
+            
         }
+
         private void LoadCategories()
         {
             try
@@ -227,9 +264,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    tbMaloai.DataSource = dt;
-                    tbMaloai.DisplayMember = "MaLoai";  // Hiển thị tên loại
-                    tbMaloai.ValueMember = "MaLoai";      // Lưu CategoryId (mã loại)
+                    cbMaLoai.DataSource = dt;
+                    cbMaLoai.DisplayMember = "MaLoai";  // Hiển thị tên loại
+                    cbMaLoai.ValueMember = "MaLoai";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -250,9 +287,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox1.DataSource = dt;
-                    comboBox1.DisplayMember = "MaKichThuoc";  // Hiển thị tên loại
-                    comboBox1.ValueMember = "MaKichThuoc";      // Lưu CategoryId (mã loại)
+                    cbMaKT.DataSource = dt;
+                    cbMaKT.DisplayMember = "MaKichThuoc";  // Hiển thị tên loại
+                    cbMaKT.ValueMember = "MaKichThuoc";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -273,9 +310,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox2.DataSource = dt;
-                    comboBox2.DisplayMember = "MaNhom";  // Hiển thị tên loại
-                    comboBox2.ValueMember = "MaNhom";      // Lưu CategoryId (mã loại)
+                    cbMaNhom.DataSource = dt;
+                    cbMaNhom.DisplayMember = "MaNhom";  // Hiển thị tên loại
+                    cbMaNhom.ValueMember = "MaNhom";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -296,9 +333,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox3.DataSource = dt;
-                    comboBox3.DisplayMember = "MaChatLieu";  // Hiển thị tên loại
-                    comboBox3.ValueMember = "MaChatLieu";      // Lưu CategoryId (mã loại)
+                    cbMaCL.DataSource = dt;
+                    cbMaCL.DisplayMember = "MaChatLieu";  // Hiển thị tên loại
+                    cbMaCL.ValueMember = "MaChatLieu";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -313,15 +350,15 @@ namespace QLTranhAnh
                 using (SqlConnection connection = new SqlConnection(str))
                 {
                     connection.Open();
-                    string query = "select * from CongDong";
+                    string query = "select * from KhungAnh";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox4.DataSource = dt;
-                    comboBox4.DisplayMember = "MaCongDong";  // Hiển thị tên loại
-                    comboBox4.ValueMember = "MaCongDong";      // Lưu CategoryId (mã loại)
+                    cbMaKhung.DataSource = dt;
+                    cbMaKhung.DisplayMember = "MaKhung";  // Hiển thị tên loại
+                    cbMaKhung.ValueMember = "MaKhung";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -336,15 +373,15 @@ namespace QLTranhAnh
                 using (SqlConnection connection = new SqlConnection(str))
                 {
                     connection.Open();
-                    string query = "select * from KhungAnh";
+                    string query = "select * from CongDong";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox5.DataSource = dt;
-                    comboBox5.DisplayMember = "MaKhung";  // Hiển thị tên loại
-                    comboBox5.ValueMember = "MaKhung";      // Lưu CategoryId (mã loại)
+                    cbMaCD.DataSource = dt;
+                    cbMaCD.DisplayMember = "MaCongDong";  // Hiển thị tên loại
+                    cbMaCD.ValueMember = "MaCongDong";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -365,9 +402,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào ComboBox
-                    comboBox6.DataSource = dt;
-                    comboBox6.DisplayMember = "MaMau";  // Hiển thị tên loại
-                    comboBox6.ValueMember = "MaMau";      // Lưu CategoryId (mã loại)
+                    cbMaMau.DataSource = dt;
+                    cbMaMau.DisplayMember = "MaMau";  // Hiển thị tên loại
+                    cbMaMau.ValueMember = "MaMau";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -388,9 +425,9 @@ namespace QLTranhAnh
                     adapter.Fill(dt);
 
                     // Gán dữ liệu vào CmboBox
-                    comboBox7.DataSource = dt;
-                    comboBox7.DisplayMember = "MaNoiSX";  // Hiển thị tên loại
-                    comboBox7.ValueMember = "MaNoiSX";      // Lưu CategoryId (mã loại)
+                    cbMaNSX.DataSource = dt;
+                    cbMaNSX.DisplayMember = "MaNoiSX";  // Hiển thị tên loại
+                    cbMaNSX.ValueMember = "MaNoiSX";      // Lưu CategoryId (mã loại)
                 }
             }
             catch (Exception ex)
@@ -403,24 +440,39 @@ namespace QLTranhAnh
         {
             loadData();
             ClearInputs();
-        } 
+        }
         private void ClearInputs()
         {
             tbMahanghoa.Clear();
             tbTenhanghoa.Clear();
-            tbMaloai.SelectedIndex = -1;
-            comboBox1.SelectedIndex = -1;
-            comboBox2.SelectedIndex = -1;
-            comboBox3.SelectedIndex = -1;
-            comboBox4.SelectedIndex = -1;
-            comboBox5.SelectedIndex = -1;
-            comboBox6.SelectedIndex = -1;
-            comboBox7.SelectedIndex = -1;
+            cbMaLoai.SelectedIndex = -1;
+            cbMaKT.SelectedIndex = -1;
+            cbMaNhom.SelectedIndex = -1;
+            cbMaCL.SelectedIndex = -1;
+            cbMaKhung.SelectedIndex = -1;
+            cbMaCD.SelectedIndex = -1;
+            cbMaMau.SelectedIndex = -1;
+            cbMaNSX.SelectedIndex = -1;
+            numericUpDown1.Value = numericUpDown1.Minimum;
             tbDongianhap.Clear();
             tbDongiaban.Clear();
-            tbThoigianbaohanh.Clear();
+            cbTGBH.SelectedIndex = -1;
             tbGhichu.Clear();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Chọn Ảnh";
+            openFileDialog.Filter = "Image Files(*.gif;*.jpeg;*.bmp;*.wmf;*.png)|*.gif;*.jpg;*.jpeg;*.bmp;*.wmf;*.png";
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                pictureBox1.ImageLocation = openFileDialog.FileName;
+            }
+        }
+
         
     }
 }
+
+

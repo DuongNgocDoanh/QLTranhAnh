@@ -98,7 +98,7 @@ namespace QLTranhAnh
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            string checkQuery = "SELECT COUNT(*) FROM Loai WHERE MaKichThuoc = @MaKichThuoc";
+            string checkQuery = "SELECT COUNT(*) FROM KichThuoc WHERE MaKichThuoc = @MaKichThuoc";
 
             using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
             {
@@ -128,7 +128,7 @@ namespace QLTranhAnh
                     MessageBox.Show("Đã thêm thành công!");
 
 
-                    loadDataLoai();
+                    loadDataKT();
                 }
                 catch (Exception ex)
                 {
@@ -202,19 +202,15 @@ namespace QLTranhAnh
             textBox13.Clear();
             textBox14.Clear();
             textBox15.Clear();
-            textBox16.Clear();
             textBox17.Clear();
             textBox18.Clear();
             textBox19.Clear();
-            textBox20.Clear();
             textBox21.Clear();
             textBox22.Clear();
             textBox23.Clear();
-            textBox24.Clear();
             textBox25.Clear();
             textBox26.Clear();
             textBox27.Clear();
-            textBox28.Clear();
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -281,7 +277,7 @@ namespace QLTranhAnh
 
                     
                     string query = @"
-                        SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaLoai 
+                        SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaLoai ,c.TenLoai
                         FROM DMHangHoa p
                         INNER JOIN Loai c ON p.MaLoai = c.MaLoai
                         WHERE c.MaLoai = @SearchTerm
@@ -510,7 +506,7 @@ namespace QLTranhAnh
                     MessageBox.Show("Đã thêm thành công!");
 
 
-                    loadDataLoai();
+                    loadDataNhom();
                 }
                 catch (Exception ex)
                 {
@@ -550,7 +546,7 @@ namespace QLTranhAnh
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Đã xóa thành công!");
-                            loadDataKT();
+                            loadDataNhom();
                         }
                         else
                         {
@@ -601,7 +597,7 @@ namespace QLTranhAnh
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Đã sửa thành công!");
-                        loadDataLoai();
+                        loadDataNhom();
                     }
                     else
                     {
@@ -617,7 +613,7 @@ namespace QLTranhAnh
 
         private void btnTimNhom_Click(object sender, EventArgs e)
         {
-            string searchTerm = textBox9.Text.Trim(); // Lấy từ khóa tìm kiếm
+            string searchTerm = textBox12.Text.Trim(); // Lấy từ khóa tìm kiếm
 
             if (string.IsNullOrEmpty(searchTerm))
             {
@@ -652,6 +648,777 @@ namespace QLTranhAnh
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi kết nối cơ sở dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void dataGridViewKT_AutoSizeColumnsModeChanged(object sender, DataGridViewAutoSizeColumnsModeEventArgs e)
+        {
+            dataGridViewKT.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        private void btnThemCL_Click(object sender, EventArgs e)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM ChatLieu WHERE MaChatLieu = @MaChatLieu";
+
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@MaChatLieu", textBox13.Text);
+
+                int count = (int)checkCommand.ExecuteScalar();
+                if (count > 0)
+                {
+                    MessageBox.Show("Mã Chất Liệu đã tồn tại! Vui lòng nhập mã khác.");
+                    return;
+                }
+            }
+
+
+            string insertQuery = "INSERT INTO ChatLieu (MaChatLieu,TenChatLieu) VALUES (@MaChatLieu,@TenChatLieu)";
+            using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+            {
+
+                insertCommand.Parameters.AddWithValue("@MaChatLieu", textBox13.Text);
+                insertCommand.Parameters.AddWithValue("@TenChatLieu", textBox15.Text);
+
+
+                try
+                {
+
+                    insertCommand.ExecuteNonQuery();
+                    MessageBox.Show("Đã thêm thành công!");
+
+
+                    loadDataCL();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnXoaCL_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox13.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã chất liệu cần xóa.");
+                return;
+            }
+
+            // Thông báo xác nhận
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa mã chất liệu này không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                string deleteQuery = "DELETE FROM ChatLieu WHERE MaChatLieu = @MaChatLieu";
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@MaChatLieu", textBox13.Text);
+
+                    try
+                    {
+                        // Mở kết nối nếu nó chưa được mở
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadDataCL();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã chất liệu không tồn tại!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message);
+                    }
+                    finally
+                    {
+                        // Đóng kết nối nếu nó được mở trong khối try
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+               
+            }
+        }
+
+        private void btnSuaCL_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox13.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã chất liệu để sửa.");
+                return;
+            }
+
+
+            string updateQuery = "UPDATE ChatLieu SET TenChatLieu = @TenChatLieu WHERE MaChatLieu = @MaChatLieu";
+
+            using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+            {
+
+                updateCommand.Parameters.AddWithValue("@MaChatLieu", textBox13.Text);
+                updateCommand.Parameters.AddWithValue("@TenChatLieu", textBox15.Text);
+
+
+                try
+                {
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Đã sửa thành công!");
+                        loadDataCL();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Mã chất liệu không tồn tại!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnTimCL_Click(object sender, EventArgs e)
+        {
+            string searchTerm = textBox14.Text.Trim(); // Lấy từ khóa tìm kiếm
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                MessageBox.Show("Vui lòng nhập mã loại hoặc tên loại cần tìm.");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(str))
+                {
+                    connection.Open();
+
+
+                    string query = @"
+                SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaChatLieu,c.TenChatLieu
+                FROM DMHangHoa p
+                INNER JOIN ChatLieu c ON p.MaChatLieu = c.MaChatLieu
+                WHERE c.MaChatLieu = @SearchTerm
+            ";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand.Parameters.AddWithValue("@SearchTerm", searchTerm);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Gán kết quả tìm kiếm vào DataGridView
+                    dataGridViewCL.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi kết nối cơ sở dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void btnThemNSX_Click(object sender, EventArgs e)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM NoiSanXuat WHERE MaNoiSX = @MaNoiSX";
+
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@MaNoiSX", textBox17.Text);
+
+                int count = (int)checkCommand.ExecuteScalar();
+                if (count > 0)
+                {
+                    MessageBox.Show("Mã Nơi Sản Xuất đã tồn tại! Vui lòng nhập mã khác.");
+                    return;
+                }
+            }
+
+
+            string insertQuery = "INSERT INTO NoiSanXuat (MaNoiSX,TenNoiSX) VALUES (@MaNoiSX,@TenNoiSX)";
+            using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+            {
+
+                insertCommand.Parameters.AddWithValue("@MaNoiSX", textBox17.Text);
+                insertCommand.Parameters.AddWithValue("@TenNoiSX", textBox18.Text);
+
+
+                try
+                {
+
+                    insertCommand.ExecuteNonQuery();
+                    MessageBox.Show("Đã thêm thành công!");
+
+
+                    loadDataNSX();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnXoaNSX_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox17.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã nơi sản xuất cần xóa.");
+                return;
+            }
+
+            // Thông báo xác nhận
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa mã nơi sản xuất này không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                string deleteQuery = "DELETE FROM NoiSanXuat WHERE MaNoiSX = @MaNoiSX";
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@MaNoiSX", textBox17.Text);
+
+                    try
+                    {
+                        // Mở kết nối nếu nó chưa được mở
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadDataNSX();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã NSX không tồn tại!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message);
+                    }
+                    finally
+                    {
+                        // Đóng kết nối nếu nó được mở trong khối try
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hủy thao tác xóa.");
+            }
+        }
+
+        private void btnSuaNSX_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox17.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã nơi sản xuất để sửa.");
+                return;
+            }
+
+
+            string updateQuery = "UPDATE NoiSanXuat SET TenNoiSX = @TenNoiSX WHERE MaNoiSX = @MaNoiSX";
+
+            using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+            {
+
+                updateCommand.Parameters.AddWithValue("@MaNoiSX", textBox17.Text);
+                updateCommand.Parameters.AddWithValue("@TenNoiSX", textBox18.Text);
+
+
+                try
+                {
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Đã sửa thành công!");
+                        loadDataNSX();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Mã nơi sản xuất không tồn tại!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnTimNSX_Click(object sender, EventArgs e)
+        {
+            string searchTerm = textBox19.Text.Trim(); // Lấy từ khóa tìm kiếm
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                MessageBox.Show("Vui lòng nhập mã NSX cần tìm.");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(str))
+                {
+                    connection.Open();
+
+
+                    string query = @"
+                SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaNoiSX,c.TenNoiSX 
+                FROM DMHangHoa p
+                INNER JOIN NoiSanXuat c ON p.MaNoiSX = c.MaNoiSX
+                WHERE c.MaNoiSX = @SearchTerm
+            ";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand.Parameters.AddWithValue("@SearchTerm", searchTerm);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Gán kết quả tìm kiếm vào DataGridView
+                    dataGridViewNSX.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi kết nối cơ sở dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void btnThemMau_Click(object sender, EventArgs e)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM MauSac WHERE MaMau = @MaMau";
+
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@MaMau", textBox21.Text);
+
+                int count = (int)checkCommand.ExecuteScalar();
+                if (count > 0)
+                {
+                    MessageBox.Show("Mã Màu đã tồn tại! Vui lòng nhập mã khác.");
+                    return;
+                }
+            }
+
+
+            string insertQuery = "INSERT INTO MauSac (MaMau,TenMau) VALUES (@MaMau,@TenMau)";
+            using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+            {
+
+                insertCommand.Parameters.AddWithValue("@MaMau", textBox21.Text);
+                insertCommand.Parameters.AddWithValue("@TenMau", textBox22.Text);
+
+
+                try
+                {
+
+                    insertCommand.ExecuteNonQuery();
+                    MessageBox.Show("Đã thêm thành công!");
+
+
+                    loadDataMau();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnXoaMau_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox21.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã cần xóa.");
+                return;
+            }
+
+            // Thông báo xác nhận
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                string deleteQuery = "DELETE FROM MauSac WHERE MaMau = @MaMau";
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@MaMau", textBox21.Text);
+
+                    try
+                    {
+                        // Mở kết nối nếu nó chưa được mở
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadDataMau();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã không tồn tại!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message);
+                    }
+                    finally
+                    {
+                        // Đóng kết nối nếu nó được mở trong khối try
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hủy thao tác xóa.");
+            }
+        }
+
+        private void btnSuaMau_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox21.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã để sửa.");
+                return;
+            }
+
+
+            string updateQuery = "UPDATE MauSac SET TenMau = @TenMau WHERE MaMau = @MaMau";
+
+            using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+            {
+
+                updateCommand.Parameters.AddWithValue("@MaMau", textBox21.Text);
+                updateCommand.Parameters.AddWithValue("@TenMau", textBox22.Text);
+
+
+                try
+                {
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Đã sửa thành công!");
+                        loadDataMau();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Mã không tồn tại!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnTimKiemMau_Click(object sender, EventArgs e)
+        {
+            string searchTerm = textBox23.Text.Trim(); // Lấy từ khóa tìm kiếm
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                MessageBox.Show("Vui lòng nhập mã cần tìm.");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(str))
+                {
+                    connection.Open();
+
+
+                    string query = @"
+                SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaMau,c.TenMau
+                FROM DMHangHoa p
+                INNER JOIN MauSac c ON p.MaMau = c.MaMau
+                WHERE c.MaMau = @SearchTerm
+            ";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand.Parameters.AddWithValue("@SearchTerm", searchTerm);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Gán kết quả tìm kiếm vào DataGridView
+                    dataGridViewMau.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi kết nối cơ sở dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void btnThemKA_Click(object sender, EventArgs e)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM KhungAnh WHERE MaKhung = @MaKhung";
+
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@MaKhung", textBox25.Text);
+
+                int count = (int)checkCommand.ExecuteScalar();
+                if (count > 0)
+                {
+                    MessageBox.Show("Mã đã tồn tại! Vui lòng nhập mã khác.");
+                    return;
+                }
+            }
+
+
+            string insertQuery = "INSERT INTO KhungAnh (MaKhung,TenKhung) VALUES (@MaKhung,@TenKhung)";
+            using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+            {
+
+                insertCommand.Parameters.AddWithValue("@MaKhung", textBox25.Text);
+                insertCommand.Parameters.AddWithValue("@TenKhung", textBox26.Text);
+
+
+                try
+                {
+
+                    insertCommand.ExecuteNonQuery();
+                    MessageBox.Show("Đã thêm thành công!");
+
+
+                    loadDataKA();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnXoaKA_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox25.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã cần xóa.");
+                return;
+            }
+
+            // Thông báo xác nhận
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                string deleteQuery = "DELETE FROM KhungAnh WHERE MaKhung = @MaKhung";
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@MaKhung", textBox25.Text);
+
+                    try
+                    {
+                        // Mở kết nối nếu nó chưa được mở
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadDataKA();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã không tồn tại!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message);
+                    }
+                    finally
+                    {
+                        // Đóng kết nối nếu nó được mở trong khối try
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hủy thao tác xóa.");
+            }
+        }
+
+        private void btnSuaKA_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBox25.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã để sửa.");
+                return;
+            }
+
+
+            string updateQuery = "UPDATE KhungAnh SET TenKhung = @TenKhung WHERE MaKhung = @MaKhung";
+
+            using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+            {
+
+                updateCommand.Parameters.AddWithValue("@MaKhung", textBox25.Text);
+                updateCommand.Parameters.AddWithValue("@TenKhung", textBox26.Text);
+
+
+                try
+                {
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Đã sửa thành công!");
+                        loadDataKA();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Mã không tồn tại!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnTimKiemKA_Click(object sender, EventArgs e)
+        {
+            string searchTerm = textBox27.Text.Trim(); // Lấy từ khóa tìm kiếm
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                MessageBox.Show("Vui lòng nhập mã cần tìm.");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(str))
+                {
+                    connection.Open();
+
+
+                    string query = @"
+                SELECT p.MaHang, p.TenHangHoa,p.SoLuong, c.MaKhung ,c.TenKhung
+                FROM DMHangHoa p
+                INNER JOIN KhungAnh c ON p.MaKhung = c.MaKhung
+                WHERE c.MaKhung = @SearchTerm
+            ";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand.Parameters.AddWithValue("@SearchTerm", searchTerm);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Gán kết quả tìm kiếm vào DataGridView
+                    dataGridViewKA.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi kết nối cơ sở dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void btnXoa1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tbMaLoai.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã cần xóa.");
+                return;
+            }
+
+            // Thông báo xác nhận
+            DialogResult dialogResult = MessageBox.Show("Bạn có chắc chắn muốn xóa không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                string deleteQuery = "DELETE FROM Loai WHERE MaLoai = @MaLoai";
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@MaLoai", tbMaLoai.Text);
+
+                    try
+                    {
+                        // Mở kết nối nếu nó chưa được mở
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
+
+                        int rowsAffected = deleteCommand.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Đã xóa thành công!");
+                            loadDataLoai();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã không tồn tại!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message);
+                    }
+                    finally
+                    {
+                        // Đóng kết nối nếu nó được mở trong khối try
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hủy thao tác xóa.");
             }
         }
     }
